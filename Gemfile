@@ -26,7 +26,7 @@ gem 'dry-validation'
 # A powerful logger for Roda with a few tricks up it's sleeve.
 gem 'roda-enhanced_logger'
 # Organize your code into reusable components.
-gem 'dry-system', '0.18.1'
+gem 'dry-system', '0.19.1'
 # A toolkit of support libraries and Ruby core extensions extracted from the Rails framework.
 gem 'activesupport'
 # Plugin that adds BCrypt authentication and password hashing to Sequel models.
@@ -37,6 +37,10 @@ gem 'sequel_secure_password'
 gem 'timecop'
 # Ruby internationalization and localization (i18n) solution.
 gem 'i18n'
+# Simple, efficient background processing for Ruby.
+gem 'sidekiq'
+# Efficient and thread-safe code loader for Ruby.
+gem 'zeitwerk'
 
 group :development, :test do
     # A library for setting up Ruby objects as test data.
