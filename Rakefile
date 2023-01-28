@@ -43,7 +43,9 @@ namespace :db do
     # Dump database schema only in development environment.
     development = Application.env == 'development'
 
-    sh %(pg_dump --schema-only --no-privileges --no-owner -s #{Application['database'].url} > db/structure.sql) if development
+    if development
+      sh %(pg_dump --schema-only --no-privileges --no-owner -s #{Application['database'].url} > db/structure.sql)
+    end
   end
 
   desc 'Seed database with test data.'

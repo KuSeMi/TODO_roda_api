@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source 'https://rubygems.org'
 ruby '3.1.1'
 
@@ -43,25 +44,25 @@ gem 'sidekiq'
 gem 'zeitwerk'
 
 group :development, :test do
-    # A library for setting up Ruby objects as test data.
-    gem 'factory_bot'
-    # A Ruby gem to load environment variables from `.env`.
-    gem 'dotenv'
-    # A Ruby static code analyzer and formatter, based on the community Ruby style guide.
-    gem 'rubocop'
-    # An extension of RuboCop focused on code performance checks.
-    gem 'rubocop-performance'
-    # Code style checking for RSpec files.
-    gem 'rubocop-rspec'
-    # Thread-safety analysis for your projects.
-    gem 'rubocop-thread_safety'
-    # Code style checking for Sequel.
-    gem 'rubocop-sequel'
-    # A RuboCop plugin for Rake
-    gem 'rubocop-rake'
-    # RSpec meta-gem that depends on the other components.
-    gem 'rspec'
-    # Rack::Test is a layer on top of Rack's MockRequest similar to Merb's
-    # RequestHelper.
-    gem 'rack-test'
+  # A library for setting up Ruby objects as test data.
+  gem 'factory_bot'
+  # A Ruby gem to load environment variables from `.env`.
+  gem 'dotenv'
+  # A Ruby static code analyzer and formatter, based on the community Ruby style guide.
+  gem 'rubocop'
+  # An extension of RuboCop focused on code performance checks.
+  gem 'rubocop-performance'
+  # Code style checking for RSpec files.
+  gem 'rubocop-rspec'
+  # Thread-safety analysis for your projects.
+  gem 'rubocop-thread_safety'
+  # Code style checking for Sequel.
+  gem 'rubocop-sequel'
+  # A RuboCop plugin for Rake
+  gem 'rubocop-rake'
+  # RSpec meta-gem that depends on the other components.
+  gem 'rspec'
+  # Rack::Test is a layer on top of Rack's MockRequest similar to Merb's
+  # RequestHelper.
+  gem 'rack-test'
 end

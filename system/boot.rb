@@ -4,9 +4,9 @@
 
 require_relative 'application'
 
+require 'dry-validation'
 require 'pry'
 require 'securerandom'
-require 'dry-validation'
 
 # Register automatically application classess and the external dependencies from the /system/boot folder.
 Application.finalize!

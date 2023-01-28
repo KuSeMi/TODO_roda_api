@@ -3,8 +3,8 @@
 # This file contains configuration for ActiveSupport module.
 Application.boot(:active_support) do
   init do
-    require 'active_support/message_verifier'
     require 'active_support/json'
+    require 'active_support/message_verifier'
   end
 
   start do
