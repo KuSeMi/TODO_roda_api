@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 ruby '3.1.1'
 
 # Routing Tree Web Toolkit.
-gem 'roda', '>= 3.41'
+gem 'roda', '>= 3.64'
 # Use Puma as the app server.
 gem 'puma', '~> 5.2'
 # A make-like build utility for Ruby.
