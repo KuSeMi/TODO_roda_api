@@ -55,6 +55,20 @@ class App < Roda
   # Adds request routing methods for all http verbs.
   plugin :all_verbs
 
+  # It validates authorization token that was passed in Authorization header.
+  #
+  # @see AuthorizationTokenValidator
+  def current_user
+    return @current_user if @current_user
+
+    purpose = request.url.include?('refresh_token') ? :refresh_token : :access_token
+
+    @current_user = AuthorizationTokenValidator.new(
+      authorization_token: env['HTTP_AUTHORIZATION'],
+      purpose: purpose
+    ).call
+  end
+
   route do |r|
     r.on('api') do
       r.on('v1') do
@@ -71,6 +85,11 @@ class App < Roda
           login_params[:password]).call
           tokens = AuthorizationTokensGenerator.new(user: user).call
           UserSerializer.new(user: user, tokens: tokens).render
+        end
+
+        r.delete('logout') do
+          Users::UpdateAuthenticationToken.new(user: current_user).call
+          response.write(nil)
         end
       end
     end
