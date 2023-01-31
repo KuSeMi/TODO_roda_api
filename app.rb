@@ -91,6 +91,12 @@ class App < Roda
           Users::UpdateAuthenticationToken.new(user: current_user).call
           response.write(nil)
         end
+
+        r.post('refresh_token') do
+          Users::UpdateAuthenticationToken.new(user: current_user).call
+          tokens = AuthorizationTokensGenerator.new(user: current_user).call
+          TokensSerializer.new(tokens: tokens).render
+        end
       end
     end
   end
