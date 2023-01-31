@@ -20,7 +20,19 @@ class App < Roda
   plugin :symbol_matchers
 
   # Adds ability to automatically handle errors raised by the application.
-  plugin :error_handler
+  plugin :error_handler do |e|
+    if e.instance_of?(Exceptions::InvalidParamsError)
+      error_object = e.object
+      response.status = 422
+    elsif e.instance_of?(Sequel::ValidationFailed)
+      error_object = e.model.errors
+      response.status = 422
+    else
+      error_object  = { error: I18n.t('something_went_wrong') }
+      response.status = 500
+    end
+      response.write(error_object.to_json)
+  end
 
   # Allows modifying the default headers for responses.
   plugin :default_headers,
@@ -32,4 +44,17 @@ class App < Roda
 
   # Adds request routing methods for all http verbs.
   plugin :all_verbs
+
+  route do |r|
+    r.on('api') do
+      r.on('v1') do
+        r.post('sign_up') do
+          sign_up_params = SignUpParams.new.permit!(r.params)
+          user = Users::Creator.new(attributes: sign_up_params).call
+          tokens = AuthorizationTokensGenerator.new(user: user).call
+          UserSerializer.new(user: user, tokens: tokens).render
+        end
+      end
+    end
+  end
 end
