@@ -22,16 +22,26 @@ class App < Roda
   # Adds ability to automatically handle errors raised by the application.
   plugin :error_handler do |e|
     if e.instance_of?(Exceptions::InvalidParamsError)
-      error_object = e.object
+      error_object    = e.object
       response.status = 422
     elsif e.instance_of?(Sequel::ValidationFailed)
-      error_object = e.model.errors
+      error_object    = e.model.errors
       response.status = 422
+    elsif e.instance_of?(Exceptions::InvalidEmailOrPassword)
+      error_object    = { error: I18n.t('invalid_email_or_password') }
+      response.status = 401
+    elsif e.instance_of?(ActiveSupport::MessageVerifier::InvalidSignature)
+      error_object    = { error: I18n.t('invalid_authorization_token') }
+      response.status = 401
+    elsif e.instance_of?(Sequel::NoMatchingRow)
+      error_object    = { error: I18n.t('not_found') }
+      response.status = 404
     else
-      error_object  = { error: I18n.t('something_went_wrong') }
+      error_object    = { error: I18n.t('something_went_wrong') }
       response.status = 500
     end
-      response.write(error_object.to_json)
+
+    response.write(error_object.to_json)
   end
 
   # Allows modifying the default headers for responses.
@@ -51,6 +61,14 @@ class App < Roda
         r.post('sign_up') do
           sign_up_params = SignUpParams.new.permit!(r.params)
           user = Users::Creator.new(attributes: sign_up_params).call
+          tokens = AuthorizationTokensGenerator.new(user: user).call
+          UserSerializer.new(user: user, tokens: tokens).render
+        end
+
+        r.post('login') do
+          login_params = LoginParams.new.permit!(r.params)
+          user = Users::Authenticator.new(email: login_params[:email], password:
+          login_params[:password]).call
           tokens = AuthorizationTokensGenerator.new(user: user).call
           UserSerializer.new(user: user, tokens: tokens).render
         end
