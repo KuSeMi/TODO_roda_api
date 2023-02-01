@@ -120,6 +120,11 @@ class App < Roda
               Todos::Updater.new(todo: todo, attributes: todo_params).call
               TodoSerializer.new(todo: todo).render
             end
+
+            r.delete do
+              todo.delete
+              response.write(nil)
+            end
           end
 
           r.get do
