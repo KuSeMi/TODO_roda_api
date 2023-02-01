@@ -97,6 +97,16 @@ class App < Roda
           tokens = AuthorizationTokensGenerator.new(user: current_user).call
           TokensSerializer.new(tokens: tokens).render
         end
+
+        r.on('todos') do
+          # We are calling the current_user method to get the current user
+          # from the authorization token that was passed in the Authorization header.current_user
+          r.get do
+            todos_params = TodosParams.new.permit!(r.params)
+            todos        = TodosQuery.new(dataset: current_user.todos_dataset, params:todos_params).call
+            TodosSerializer.new(todos: todos).render
+          end
+        end
       end
     end
   end
