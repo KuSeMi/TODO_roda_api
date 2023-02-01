@@ -55,6 +55,11 @@ class App < Roda
   # Adds request routing methods for all http verbs.
   plugin :all_verbs
 
+  # The symbol_matchers plugin allows you do define custom regexps to use for specific symbols.
+  plugin :symbol_matchers
+  # Validate UUID format.
+  symbol_matcher :uuid, Constants::UUID_REGEX
+
   # It validates authorization token that was passed in Authorization header.
   #
   # @see AuthorizationTokenValidator
@@ -102,6 +107,14 @@ class App < Roda
           # We are calling the current_user method to get the current user
           # from the authorization token that was passed in the Authorization header.
           current_user
+
+          r.on(:uuid) do |id|
+            todo = current_user.todos_dataset.with_pk!(id)
+
+            r.get do
+              TodoSerializer.new(todo: todo).render
+            end
+          end
 
           r.get do
             todos_params = TodosParams.new.permit!(r.params)
