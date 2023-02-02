@@ -42,6 +42,10 @@ gem 'i18n'
 gem 'sidekiq'
 # Efficient and thread-safe code loader for Ruby.
 gem 'zeitwerk'
+# Rack middleware for blocking & throttling.
+gem 'rack-attack'
+# Redis is an in-memory database that persists on disk.
+gem 'redis'
 
 group :development, :test do
   # A library for setting up Ruby objects as test data.
